@@ -1,0 +1,21 @@
+version: 2
+
+sources:
+  - name: stitch_hubspot_crm
+    database: "{{ var('stg_hubspot_crm_stitch_database') }}"
+    schema: "{{ var('stg_hubspot_crm_stitch_schema') }}"
+
+    freshness:
+      warn_after: {count: 1, period: day}
+
+    loaded_at_field: _sdc_batched_at
+
+    tables:
+      - name: companies
+      - name: contacts
+      - name: conversations
+      - name: deals
+      - name: contact_deals
+      - name: owners
+      - name: deal_pipelines
+      - name: pipeline_stages

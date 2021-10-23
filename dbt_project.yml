@@ -1,0 +1,69 @@
+
+# Name your project! Project names should contain only lowercase characters
+# and underscores. A good package name should reflect your organization's
+# name or the intended use of these models
+name: 'my_new_project'
+version: '1.0.0'
+config-version: 2
+
+# This setting configures which "profile" dbt uses for this project.
+profile: 'dbt_wisemuffin'
+
+# These configurations specify where dbt should look for different types of files.
+# The `source-paths` config, for example, states that models in this project can be
+# found in the "models/" directory. You probably won't need to change these!
+source-paths: ["models"]
+analysis-paths: ["analysis"]
+test-paths: ["tests"]
+data-paths: ["data"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"  # directory which will store compiled SQL files
+clean-targets:         # directories to be removed by `dbt clean`
+  - "target"
+  - "dbt_modules"
+
+
+# Configuring models
+# Full documentation: https://docs.getdbt.com/docs/configuring-models
+
+# In this example config, we tell dbt to build all models in the example/ directory
+# as tables. These settings can be overridden in the individual model files
+# using the `{{ config(...) }}` macro.
+models:
+  my_new_project:
+    # Config indicated by + and applies to all files under models/example/
+    example:
+      +materialized: view
+
+vars:
+  crm_warehouse_company_sources: ['hubspot_crm']
+  crm_warehouse_contact_sources: ['hubspot_crm']
+  crm_warehouse_conversations_sources: ['hubspot_crm']
+  crm_warehouse_contact_deal_sources: ['hubspot_crm']
+  crm_warehouse_companies_sources: ['hubspot_crm']
+  marketing_warehouse_ad_campaign_sources: []
+  marketing_warehouse_ad_campaign_performance_sources: []
+  marketing_warehouse_ad_performance_sources: []
+  marketing_warehouse_ad_group_sources: []
+  marketing_warehouse_ad_sources: []
+  marketing_warehouse_email_event_sources: []
+  marketing_warehouse_email_list_sources: []
+  marketing_warehouse_deal_sources: ['hubspot_crm']
+
+  stg_hubspot_crm_id-prefix: hubspot-
+  stg_hubspot_crm_stitch_database: dbt-wisemuffin
+  stg_hubspot_crm_stitch_schema: raw_stitch_hubspot
+  stg_hubspot_crm_etl: stitch
+  stg_hubspot_crm_stitch_companies_table: "{{ source('stitch_hubspot_crm', 'companies') }}"
+  stg_hubspot_crm_stitch_contacts_table: "{{ source('stitch_hubspot_crm', 'contacts') }}"
+  stg_hubspot_crm_stitch_deals_table: "{{ source('stitch_hubspot_crm', 'deals') }}"
+  stg_hubspot_crm_stitch_contact_deals_table: "{{ source('stitch_hubspot_crm', 'contact_deals') }}"
+  stg_hubspot_crm_stitch_owners_table: "{{ source('stitch_hubspot_crm', 'owners') }}"
+  stg_hubspot_crm_stitch_pipeline_stages_table: "{{ source('stitch_hubspot_crm', 'pipeline_stages') }}"
+  stg_hubspot_crm_stitch_deal_pipelines_table: "{{ source('stitch_hubspot_crm', 'deal_pipelines') }}"
+  stg_hubspot_crm_stitch_engagements_table: "{{ source('stitch_hubspot_crm', 'conversations') }}"
+
+
+  enable_companies_merge_file: false
